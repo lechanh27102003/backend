@@ -39,11 +39,13 @@ async function sendResponseEmail(contact, responseMessage) {
   const mailOptions = {
     from: "plantiqueshop01@gmail.com",
     to: contact.email,
-    subject: "Response to your contact message",
+    subject: "Plantique Customer Service-Response to your contact message",
     html: `<h1>Response to your message</h1>
            <p>Hi ${contact.name},</p>
            <p>${responseMessage}</p>
-           <p>Thank you for contacting us!</p>`
+           <p>Thank you for your pantience and understanding.</p></br>
+           <p>Best regards,</p>
+           <p>The Plantique Team</p>`
   };
 
   try {
