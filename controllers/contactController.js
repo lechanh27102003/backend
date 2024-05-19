@@ -1,6 +1,6 @@
 const Contact = require('../models/Contact');
 const createError = require('../utils/appError');
-
+const nodemailer = require('nodemailer');
 // POST a new contact
 exports.createContact = async (req, res) => {
   const { name, phone, email, message } = req.body;
@@ -25,25 +25,54 @@ exports.createContact = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Function to send email
+async function sendResponseEmail(contact, responseMessage) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: "safjvgecdyhbmmyd"
+    }
+  });
+
+  const mailOptions = {
+    from: "plantiqueshop01@gmail.com",
+    to: contact.email,
+    subject: "Response to your contact message",
+    html: `<h1>Response to your message</h1>
+           <p>Hi ${contact.name},</p>
+           <p>${responseMessage}</p>
+           <p>Thank you for contacting us!</p>`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Response email sent successfully.');
+  } catch (error) {
+    console.error('Failed to send response email:', error);
+  }
+}
 // UPDATE a single contact by ID
 exports.updateContact = async (req, res) => {
-  const { responseDate, status } = req.body;
-
+  const { responseDate, status, responseMessage } = req.body;
   // Optional: Check if the status or date are actually provided
-  if (!responseDate || !status) {
+  if (!responseDate || !status || !responseMessage) {
     return res.status(400).json({ success: false, message: "Missing fields for update." });
   }
 
   try {
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
-      { $set: { responseDate: responseDate, status: status } },
-      { new: true }  // Return the updated document
+      { $set: { responseDate: responseDate, status: status, responseMessage: responseMessage } },
+      { new: true }
     );
 
     if (!contact) {
       return res.status(404).json({ success: false, message: "Contact not found" });
     }
+     // Send response email
+     await sendResponseEmail(contact, responseMessage);
 
     res.status(200).json({ success: true, message: "Contact updated successfully.", data: contact });
   } catch (error) {

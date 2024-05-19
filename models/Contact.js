@@ -27,6 +27,9 @@ const contactSchema = new mongoose.Schema({
   responseDate: { 
       type: Date, 
       default: null 
-    } // Trường ngày phản hồi mặc định là null
+    }, // Trường ngày phản hồi mặc định là null
+    responseMessage: {
+        type: String
+      }
   });
 module.exports = mongoose.model('Contact', contactSchema);
