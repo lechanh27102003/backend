@@ -25,7 +25,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Middleware CORS
 app.use(cors({
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Các phương thức được cho phép
+  origin: ['https://deft-narwhal-3a7799.netlify.app', 'https://plantique.netlify.app', 'https://plantique.io.vn'],
+  methods: ['GET', 'HEAD', 'PATCH','POST', 'PUT', 'DELETE'], // Các phương thức được cho phép
   allowedHeaders: ['Content-Type', 'Authorization'], // Các header được phép
   credentials: true, // Cho phép gửi cookie qua CORS
 }));
