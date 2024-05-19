@@ -104,7 +104,9 @@ exports.sendEmail = async (req, res, next) => {
             pass: "safjvgecdyhbmmyd"
         }
     });
-    let mailDetails = {
+    const resetUrl = `${process.env.LIVE_URL}/reset/${token}`;
+
+        const mailDetails = {
         from: "plantiqueshop01@gmail.com",
         to: email,
         subject: "Reset Password",
@@ -117,7 +119,7 @@ exports.sendEmail = async (req, res, next) => {
         <h1>Reset Password Request</h1>
         <p>Dear ${user.name},</p>
         <p>We have received a reset password request for your account with Plantiqueshop. To complete the reset password request, please Click on the button below.</p>
-        <a href = ${process.env.LIVE_URL}/reset/${token}><button style="background-color: #4CAF50; color: #white; padding: 14px 20px; border: none; cursor: pointer; border-radius: 4px;">Reset Password</button></a>
+        <p>${resetUrl}</p>
         <p>Please note that this link is only valid for 5 minutes. If you did not request a password reset, please disregard this message.</p>
         <p>Thank you,</p>
         <p>The Plantiqueshop Team</p>
