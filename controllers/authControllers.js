@@ -74,6 +74,7 @@ exports.login = async (req, res, next) => {
                 email: user.email,
                 role: user.role,
             },
+            redirectUrl
         });
     } catch (error) {
         next(error); 
